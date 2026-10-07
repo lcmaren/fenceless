@@ -1,26 +1,43 @@
 {
-	"name": "@unlitworks/fmd",
-	"version": "0.1.0",
+	"name": "fenceless",
+	"version": "0.2.0",
 	"description": "Frontmatter as plain key: value lines, no YAML, every value a string.",
-	"private": true,
+	"keywords": [
+		"frontmatter",
+		"markdown",
+		"metadata",
+		"fmd",
+		"parser"
+	],
+	"license": "MIT",
+	"author": "L. C. Maren",
 	"type": "module",
-	"main": "src/fmd.ts",
-	"types": "src/fmd.ts",
+	"main": "./dist/fmd.js",
+	"types": "./dist/fmd.d.ts",
 	"exports": {
-		".": "./src/fmd.ts"
+		".": {
+			"types": "./dist/fmd.d.ts",
+			"default": "./dist/fmd.js"
+		}
 	},
 	"files": [
-		"src",
-		"README.md"
+		"dist"
 	],
+	"sideEffects": false,
 	"packageManager": "pnpm@11.23.0",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/unlitworks/fmd.git"
+		"url": "git+https://github.com/lcmaren/fenceless.git"
+	},
+	"homepage": "https://github.com/lcmaren/fenceless#readme",
+	"bugs": {
+		"url": "https://github.com/lcmaren/fenceless/issues"
 	},
 	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
 		"check": "tsc --noEmit",
-		"test": "vitest run"
+		"test": "vitest run",
+		"prepack": "pnpm build"
 	},
 	"devDependencies": {
 		"typescript": "^5.0.0",

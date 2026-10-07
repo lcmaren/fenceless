@@ -42,11 +42,11 @@ Constraint is the rest of it. YAML's expressiveness is exactly what lets the sam
 ## Usage
 
 ```sh
-pnpm add github:unlitworks/fmd#v0.1.0
+npm install fenceless
 ```
 
 ```ts
-import { parseFmd, stringifyFmd } from '@unlitworks/fmd';
+import { parseFmd, stringifyFmd } from 'fenceless';
 
 const { meta, markdown } = parseFmd(document);
 //    meta     → { author: 'ada', category: 'notes', date: '2026-08-31', … }
@@ -93,4 +93,6 @@ A heading is a heading. A fact is a line.
 
 ## License
 
-MIT for the implementation. The specification is CC BY, with an explicit grant to implement it freely in any language, under any license, without attribution in the resulting software.
+MIT for the implementation — see [LICENSE](LICENSE).
+
+The specification — the Rules and Behavior sections of this document — is [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), with an explicit grant to implement it freely in any language, under any license, without attribution in the resulting software.

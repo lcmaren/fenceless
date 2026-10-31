@@ -1,7 +1,7 @@
 {
 	"name": "fenceless",
-	"version": "0.2.0",
-	"description": "Frontmatter as plain key: value lines, no YAML, every value a string.",
+	"version": "0.2.1",
+	"description": "A plain key: value header for Markdown documents: no YAML, no fence, every value a string.",
 	"keywords": [
 		"frontmatter",
 		"markdown",

@@ -1,6 +1,6 @@
 # FMD — Fenceless Markdown
 
-Frontmatter as plain `key: value` lines, no YAML, every value a string.
+A plain `key: value` header for Markdown documents: no YAML, no fence, every value a string.
 
 ```markdown
 author: ada
@@ -13,9 +13,11 @@ tags: markdown, metadata, parsing
 The body starts here.
 ```
 
-The metadata block sits at the very top of the document — the same position as YAML frontmatter, minus the fence. It's the first blank-line-delimited run of `key: value` lines; a blank line ends it, and everything after, including the H1, is body.
+The header sits at the very top of the document — the same position as YAML frontmatter, minus the fence. It's the first blank-line-delimited run of `key: value` lines; a blank line ends it, and everything after, including the H1, is body.
 
-To a Markdown parser that has never heard of FMD, that block is an ordinary paragraph. Nothing breaks, no stray horizontal rule appears, and nothing leaks into the rendered page.
+To a Markdown parser that has never heard of FMD, the header is an ordinary paragraph. Nothing breaks, no stray horizontal rule appears, and nothing leaks into the rendered page.
+
+An FMD header has the same shape as an HTTP or email header (`key: value` lines ended by a blank line) but its own rules: keys use only lowercase letters, digits, and underscores, the space after the colon is required, there are no continuation lines, and a repeated key overrides the earlier one.
 
 ## Why
 
@@ -37,7 +39,7 @@ Constraint is the rest of it. YAML's expressiveness is exactly what lets the sam
 - **Values:** always strings. Only the *first* colon splits, so `link: https://example.com/post` keeps its value intact.
 - **No nesting.** Flat key-value only.
 - **No folding, no multi-line values.** One line, one value. Long text belongs in the body.
-- **Termination:** a blank line ends the block.
+- **Termination:** a blank line ends the header.
 
 ## Usage
 
@@ -66,8 +68,8 @@ The fields are `meta` / `markdown` rather than gray-matter's `data` / `content` 
 
 ## Behavior
 
-- **Positional detection.** The block is the document's first block, full stop — leading blank lines are skipped, nothing else is. A run of `key: value` lines further down the document is prose.
-- **All-or-nothing.** One non-matching line disqualifies the whole block; there is no partial capture. A document with no valid block returns `{ meta: {}, markdown: <whole text, trimmed> }`.
+- **Positional detection.** The header is the document's first non-blank run of lines, full stop — leading blank lines are skipped, nothing else is. A run of `key: value` lines further down the document is prose.
+- **All-or-nothing.** One non-matching line disqualifies the whole header; there is no partial capture. A document with no valid header returns `{ meta: {}, markdown: <whole text, trimmed> }`.
 - **`parseFmd` never throws.** Malformed input is simply a document without metadata.
 - **Line endings are preserved.** CRLF is tolerated when matching metadata lines, but the body is sliced from the original text — parsing a document must not silently rewrite it.
 - **A leading BOM is stripped.** Duplicate keys: last wins. Values are trimmed at the end only.
@@ -76,7 +78,7 @@ The fields are `meta` / `markdown` rather than gray-matter's `data` / `content` 
 
 Two things to know before adopting it:
 
-- A body that opens with `key: value` lines becomes metadata if the document has no block of its own. That's unavoidable given fenceless detection, and the format accepts it — in practice output always emits at least one key, so it only bites hand-written input.
+- A body that opens with `key: value` lines becomes metadata if the document has no header of its own. That's unavoidable given fenceless detection, and the format accepts it — in practice output always emits at least one key, so it only bites hand-written input.
 - **Lists are the consumer's problem.** FMD has no array type. The usual convention is comma-joined (`tags: markdown, metadata, parsing`), which means a value containing a comma cannot round-trip. Refuse at serialization rather than silently splitting.
 
 ## What FMD is not trying to be
